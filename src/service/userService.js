@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 require('dotenv').config()
 
 async function cadastrarService(nome, email, senha, tipo) {
-    if(!nome || !email || !senha || !tipo){
+    if(!nome || !email || !senha){
         throw new Error("Preencha todos os campos")
     }
 

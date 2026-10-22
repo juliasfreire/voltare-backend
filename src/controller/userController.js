@@ -4,7 +4,7 @@ async function cadastro(req,res){
     try {
         const{nome, email, senha, tipo} = req.body
 
-        if(!nome || !email || !senha || !tipo){
+        if(!nome || !email || !senha){
             return res.status(400).json({
                 mensagem: "Digite todos os campos"
             })

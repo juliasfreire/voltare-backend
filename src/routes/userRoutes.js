@@ -1,4 +1,5 @@
 const express = require("express")
+const {auth, apenasClientes, apenasPrestadores} = require("../middleware/auth")
 const router = express.Router()
 
 const userController = require("../controller/userController")
