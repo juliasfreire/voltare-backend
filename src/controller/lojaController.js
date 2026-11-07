@@ -37,8 +37,35 @@ async function todosProdutos(req,res,next) {
     }
 }
 
+async function atualizarProduto(req,res,next) {
+    try {
+        const { id } = req.params
+        const { nome, preco, descricao, imagem} = req.body
+
+        const atualizar = await lojaService.alterarProduto(id, nome, preco, descricao, imagem)
+        
+        return res.json(atualizar)
+    } catch (error) {
+        next(error)
+    }
+}
+
+async function deletarProduto(req,res,next) {
+    try {
+        const { id } = req.params
+
+        const deletar = await lojaService.excluirProduto(id)
+
+        return res.json(deletar)
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     novoProduto,
     meusProdutos,
-    todosProdutos
+    todosProdutos,
+    atualizarProduto,
+    deletarProduto
 }

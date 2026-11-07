@@ -29,8 +29,29 @@ async function listarTodos() {
     return servicos
 }
 
+async function atualizar(id, titulo, descricao, experiencia) {
+    const [result] = await db.query(
+        `UPDATE servico SET titulo = COALESCE(?, titulo), descricao = COALESCE(?, descricao),
+        experiencia = COALESCE(?, experiencia) WHERE id = ?`,
+        [titulo, descricao, experiencia, id]
+    )
+
+    return result.affectedRows
+}
+
+async function deletar(id) {
+    const [result] = await db.query(
+        "DELETE FROM servico WHERE id = ?",
+        [id]
+    )
+
+     return result.affectedRows
+}
+
 module.exports = {
     criarServico,
     listarPorPrestador,
-    listarTodos
+    listarTodos,
+    atualizar,
+    deletar
 }

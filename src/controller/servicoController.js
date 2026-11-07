@@ -36,8 +36,35 @@ async function todosServicos(req,res, next) {
     }
 }
 
+async function atualizarServico(req,res,next) {
+    try {
+        const { id } = req.params
+        const { titulo, descricao, experiencia } = req.body
+
+        const atualizar = await servicoService.alterarServico(id, titulo, descricao, experiencia)
+
+        return res.json(atualizar)
+    } catch (error) {
+        next(error)
+    }
+}
+
+async function deletarServico(req,res,next) {
+    try {
+        const { id } = req.params
+
+        const deletar = await servicoService.excluirServico(id)
+
+        return res.json(deletar)
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     novoServico,
     listarMeusServicos,
-    todosServicos
+    todosServicos,
+    atualizarServico,
+    deletarServico
 }

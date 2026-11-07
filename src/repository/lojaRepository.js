@@ -28,8 +28,29 @@ async function listarProdutos() {
     return produtos
 }
 
+async function atualizar(id, nome, preco, descricao, imagem) {
+    const [result] = await db.query(
+        `UPDATE produto SET nome = COALESCE(?, nome), preco = COALESCE(?, preco), 
+        descricao = COALESCE(?, descricao), imagem = COALESCE(?, imagem) WHERE id = ?`,
+        [nome, preco, descricao, imagem, id]
+    )
+
+    return result.affectedRows
+}
+
+async function deletar(id) {
+    const [result] = await db.query(
+        "DELETE FROM produto WHERE id = ?",
+        [id]
+    )
+
+    return result.affectedRows
+}
+
 module.exports = {
     criarProduto,
     produtosPorPrestador,
-    listarProdutos
+    listarProdutos,
+    atualizar,
+    deletar
 }
