@@ -1,6 +1,6 @@
 const userService = require("../service/userService")
 
-async function cadastro(req,res){
+async function cadastro(req,res, next){
     try {
         const{nome, email, senha, tipo} = req.body
 
@@ -16,23 +16,11 @@ async function cadastro(req,res){
             mensagem: "Usuário cadastrado com sucesso"
         })
     } catch (error) {
-        console.error(error)
-
-        if(error.message === "Email já cadastrado"){
-            return res.status(400).json({
-                mensagem: "Email já cadastrado"
-            })
-        }else{
-            return res.status(500).json({
-                mensagem: "Erro interno no servidor"
-            })
-        }
-
-        
+        next(error)
     }
 }
 
-async function login(req,res) {
+async function login(req,res, next) {
     try {
 
         const {email,senha} = req.body
@@ -51,17 +39,7 @@ async function login(req,res) {
         })
 
     } catch (error) {
-        console.error(error)
-        if(error.message === "Credenciais invalidas"){
-            return res.status(401).json({
-                mensagem: "Email ou senha inválidos"
-            })
-        }else{
-            return res.status(500).json({
-                mensagem: "Erro interno no servidor"
-            })
-        }
-        
+        next(error)
     }
     
 }

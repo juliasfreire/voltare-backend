@@ -1,6 +1,6 @@
 const lojaService = require("../service/lojaService")
 
-async function novoProduto(req,res) {
+async function novoProduto(req,res,next) {
     try {
         const {nome, preco, descricao, imagem} = req.body
         const id_prestador = req.usuario.id
@@ -12,43 +12,28 @@ async function novoProduto(req,res) {
         })
 
     } catch (error) {
-        if(message.error === "Preencha os campos"){
-            return res.status(400).json({
-                mensagem: "Preencha os campos necessários"
-            })
-        }
-
-        console.error(error)
-        return res.status(500).json({
-            mensagem: "Erro interno no servidor"
-        })
+        next(error)
     }
 }
 
-async function meusProdutos(req,res) {
+async function meusProdutos(req,res,next) {
     try {
         const id_prestador = req.usuario.id
         const produtos = await lojaService.itemsPrestador(id_prestador)
 
         return res.json(produtos)
     } catch (error) {
-        console.error(error)
-        return res.status(500).json({
-            mensagem:"Erro ao mostrar produtos"
-        })
+        next(error)
     }
 }
 
-async function todosProdutos(req,res) {
+async function todosProdutos(req,res,next) {
     try {
         const produtos = await lojaService.listarItems()
 
         return res.json(produtos)
     } catch (error) {
-        console.error(error)
-        return res.status(500).json({
-            mensagem:"Erro ao listar produtos"
-        })
+        next(error)
     }
 }
 

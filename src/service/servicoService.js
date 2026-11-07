@@ -2,7 +2,7 @@ const servicoRepository = require("../repository/servicoRepository")
 
 async function cadastrarServico(titulo, descricao, experiencia, prestador_id){
     if(!titulo || !descricao || !experiencia){
-        throw new Error("Preencha todos os campos")
+        throw Object.assign(new Error("Preencha todos os campos"), { status: 400 })
     }
 
     return await servicoRepository.criarServico(titulo, descricao, experiencia, prestador_id)
