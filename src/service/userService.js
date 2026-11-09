@@ -4,15 +4,15 @@ const jwt = require("jsonwebtoken")
 require('dotenv').config()
 
 async function cadastrarService(nome, email, senha, tipo) {
-    if(!nome || !email || !senha || !tipo){
-        throw new Error("Preencha todos os campos")
+    if(!nome || !email || !senha){
+        throw Object.assign(new Error("Preencha todos os campos"), { status: 400 })
     }
 
     const tipoUsuario = tipo === "prestador" ? "prestador" : "cliente"
 
     const usuarioExistente = await userRepository.buscarEmail(email)
     if(usuarioExistente){
-        throw new Error("Email já cadastrado")
+        throw Object.assign(new Error("Email já cadastrado"), { status: 409})
     }
 
     const senhaHash = await bcrypt.hash(senha,10)
@@ -24,18 +24,19 @@ async function loginService(email, senha) {
     const usuario = await userRepository.buscarEmail(email)
 
     if(!usuario){
-        throw new Error("Credenciais invalidas")
+        throw Object.assign(new Error("Credenciais invalidas"), { status: 401 })
     }
 
     const senhaValida = await bcrypt.compare(senha, usuario.senha)
     
     if(!senhaValida){
-        throw new Error("Credenciais invalidas")
+        throw Object.assign(new Error("Credenciais invalidas"), { status: 401 })
     }
     
     const token = jwt.sign(
         {
             id: usuario.id,
+            nome: usuario.nome,
             email: usuario.email,
             tipo: usuario.tipo
         },
